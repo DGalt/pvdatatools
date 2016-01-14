@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "E:\Users\Dan\SkyDrive\Documents\Python\LabAnalysisPackages\PVDataTools\AnalysisWindows\FrequencyWidget.py", line 197, in run_analysis
+    plt.plot(x[indexes_list[i]], y[indexes_list[i]], pen=None, symbolBrush=pg.mkColor('r'),
+IndexError: list index out of range
