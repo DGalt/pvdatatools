@@ -16,8 +16,15 @@ Dependencies
 
 Installation
 --------------
-* Option 1: Copy PVDataTools folder to your machine and run PVDataTools.py from within that folder. 
-* Option 2: (Windows Users Only) Download the dist folder to you machine and run the PVDataTools v0.02 executable
+* Option 1: Copy (or clone) PVDataTools folder to your machine and run PVDataTools.py from within that folder.
+```bash
+git clone https://github.com/DGalt/pvdatatools
+```
+* Option 2: (Windows Users Only) A frozen version of the application is available at the link below. Download the .zip, extract it, and run the PVDataTools v0.02 executable.
+```bash
+http://tinyurl.com/zs4x6gd
+```
+
 
 
 
