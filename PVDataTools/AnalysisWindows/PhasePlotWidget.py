@@ -2,7 +2,7 @@ __author__ = 'Dan'
 
 import numpy as np
 from PyQt4 import QtGui
-from AnalysisWindows.AnalysisWidget import AnalysisWidget
+from .AnalysisWidget import AnalysisWidget
 import pyqtgraph as pg
 
 

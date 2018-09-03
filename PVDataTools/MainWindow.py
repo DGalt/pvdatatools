@@ -2,16 +2,17 @@ __author__ = 'Dan'
 
 
 import os
+import sys
 from PyQt4 import QtCore, QtGui
-from extra_mods.PrairieAnalysis import pv_import as pvi
-from FilePlotController import FilePlotController
-from DataViewer import DataViewer
-from ExportDialog import ExportDialog
-from AnalysisWindows.MembraneTestWidget import MembraneTestWidget
-from AnalysisWindows.SynEventDetectWidget import SynEventDetectWidget
-from AnalysisWindows.PPRWidget import PPRWidget
-from AnalysisWindows.PhasePlotWidget import PhasePlotWidget
-from AnalysisWindows.FrequencyWidget import FrequencyWidget
+from .extra_mods.PrairieAnalysis import pv_import as pvi
+from .FilePlotController import FilePlotController
+from .DataViewer import DataViewer
+from .ExportDialog import ExportDialog
+from .AnalysisWindows.MembraneTestWidget import MembraneTestWidget
+from .AnalysisWindows.SynEventDetectWidget import SynEventDetectWidget
+from .AnalysisWindows.PPRWidget import PPRWidget
+from .AnalysisWindows.PhasePlotWidget import PhasePlotWidget
+from .AnalysisWindows.FrequencyWidget import FrequencyWidget
 
 
 class MainWindow(QtGui.QMainWindow):

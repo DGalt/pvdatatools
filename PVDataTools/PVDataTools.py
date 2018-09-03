@@ -4,8 +4,8 @@ import sys
 import os
 sys.path.append(os.path.abspath("../"))
 from PyQt4 import QtGui
-from Model import Model
-from MainWindow import MainWindow
+from .Model import Model
+from .MainWindow import MainWindow
 
 
 class PVDataTools(QtGui.QApplication):

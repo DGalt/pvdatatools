@@ -15,12 +15,14 @@ import py2exe
 #sci_pyd_files = glob(os.path.join(sci_folder, "*.pyd"))
 
 #output_dir = r'D:\Desktop\Py2ExeOutput'
-output_dir = r'E:\Users\Dan\Desktop\Py2ExeOutput'
+output_dir = r'C:\Users\Dan\Desktop\Py2ExeOutput'
 
-includes = ["sip", "PyQt4.QtCore", "PyQt4.QtGui", "PrairieAnalysis", "EphysTools", "lxml._elementpath",
+includes = ["sip", "PyQt4.QtCore", "PyQt4.QtGui", "PVDataTools.extra_mods.PrairieAnalysis", "PVDataTools.extra_mods.EphysTools", "lxml._elementpath",
             "scipy.optimize", "scipy.sparse", "scipy.sparse.csgraph._validation", "scipy.special._ufuncs_cxx",
             "scipy.special._ufuncs"]
-packages = ["PrairieAnalysis", "EphysTools"]
+packages = ["PVDataTools.extra_mods.PrairieAnalysis", "PVDataTools.extra_mods.EphysTools"]
 
-setup(windows=[{"script":'PVDataTools.py', "dest_base": "PVDataTools v0.02"}], name="PVDataTools v0.01", options={"py2exe": {"includes" : includes,
-                                                     "packages": packages, "dist_dir": output_dir}})
+setup(windows=[{"script":'./PVDataTools/PVDataTools.py', "dest_base": "PVDataTools v0.02"}]
+      , name="PVDataTools v0.01"
+      , options={"py2exe": {"includes" : includes,
+                            "packages": packages, "dist_dir": output_dir}})

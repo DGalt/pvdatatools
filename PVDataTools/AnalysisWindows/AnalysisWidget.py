@@ -2,7 +2,7 @@ __author__ = 'Daniel'
 
 import numpy as np
 from PyQt4 import QtGui
-from DataViewer import DataViewer
+from ..DataViewer import DataViewer
 import pyqtgraph as pg
 
 

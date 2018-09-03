@@ -1,8 +1,8 @@
 __author__ = 'Dan'
 
 from PyQt4 import QtGui, QtCore
-from extra_mods.EphysTools import membrane
-from AnalysisWindows.AnalysisWidget import AnalysisWidget
+from ..extra_mods.EphysTools import membrane
+from .AnalysisWidget import AnalysisWidget
 import pyqtgraph as pg
 
 

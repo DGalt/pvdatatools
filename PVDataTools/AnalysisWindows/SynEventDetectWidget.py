@@ -3,9 +3,9 @@ __author__ = 'Dan'
 import pyqtgraph as pg
 import pandas as pd
 from PyQt4 import QtGui, QtCore
-from extra_mods.EphysTools import synaptics as syn
-from extra_mods.EphysTools import utilities as util
-from AnalysisWindows.AnalysisWidget import AnalysisWidget
+from ..extra_mods.EphysTools import synaptics as syn
+from ..extra_mods.EphysTools import utilities as util
+from .AnalysisWidget import AnalysisWidget
 
 
 class SynEventDetectWidget(AnalysisWidget):

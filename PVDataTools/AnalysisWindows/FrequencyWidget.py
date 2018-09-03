@@ -2,8 +2,8 @@ __author__ = 'Dan'
 
 from PyQt4 import QtGui, QtCore
 import pyqtgraph as pg
-from extra_mods.EphysTools import pacemaking as pace
-from AnalysisWindows.AnalysisWidget import AnalysisWidget
+from ..extra_mods.EphysTools import pacemaking as pace
+from .AnalysisWidget import AnalysisWidget
 
 
 class FrequencyWidget(AnalysisWidget):

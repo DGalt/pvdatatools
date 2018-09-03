@@ -4,8 +4,8 @@ from PyQt4 import QtCore, QtGui
 import pyqtgraph as pg
 import numpy as np
 import sys
-from extra_mods.PrairieAnalysis import pv_import as pvi
-from extra_mods.EphysTools import utilities as util
+from .extra_mods.PrairieAnalysis import pv_import as pvi
+from .extra_mods.EphysTools import utilities as util
 
 
 class DataViewer(QtGui.QWidget):
