@@ -39,9 +39,9 @@ def parse_vr(filename):
     primary_val = {'unit': unit[0].text, 'divisor': float(divisor[0].text)}
     secondary_val = {'unit': unit[1].text, 'divisor': float(divisor[1].text)}
     #gets sampling rate
-    sampling_val = int((tree.find('.//Rate')).text)
+    sampling_val = float((tree.find('.//Rate')).text)
     #gets recording time, converts to sec
-    duration_val = (int((tree.find('.//AcquisitionTime')).text))/1000
+    duration_val = (float((tree.find('.//AcquisitionTime')).text))/1000
 
     #finds the voltage recording csv file name
     datafile = (tree.find('.//DataFile')).text
