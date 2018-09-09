@@ -11,12 +11,9 @@ def calc_membrane_properties(df, baseline_start=0.5, baseline_end=0.8, pulse_sta
                                  
     #have to make copy of df to not modify original df with calculation
     data = df.copy()
+
     #nudge start over slightly so don't catch a data point prior to pulse
     pulse_start += 0.0001
-
-    #conversions - pulse_amplitude is in mVs, ydata is in pAs
-    pulse_amplitude *= 1e-3
-    data.Primary *= 1e-12
 
     #baseline recording data
     data = util.baseline(data, baseline_start, baseline_end)
@@ -25,8 +22,8 @@ def calc_membrane_properties(df, baseline_start=0.5, baseline_end=0.8, pulse_sta
     i_baseline = data.Primary[(data.Time >= baseline_start) & (data.Time <= baseline_end)].mean()
 
     #i_ss is the stead-state current during the pulse, taken between 70% and 90% of pulse duration
-    i_ss = data.Primary[(data.Time >= pulse_start + pulse_duration *0.7) &
-                        (data.Time <= pulse_start + pulse_duration *0.9)].mean()
+    i_ss = data.Primary[(data.Time >= pulse_start + pulse_duration * 0.7) &
+                        (data.Time <= pulse_start + pulse_duration * 0.9)].mean()
 
     #calculate delta_i -- i.e. difference between baseline current amplitude and steady-state current amplitude
     delta_i = (i_ss-i_baseline)
@@ -39,25 +36,33 @@ def calc_membrane_properties(df, baseline_start=0.5, baseline_end=0.8, pulse_sta
     #remove delta_i; this part of the capacitance charge is calculated later as q2
     ydata_full -= delta_i
 
+    # plt.plot(xdata_full, ydata_full)
+
     #find capacitance peak and take subset of transient based on peak (0% decay to 90% decay) for fitting
     if pulse_amplitude > 0:
-        peak = ydata_full.max()
-        ydata = ydata_full[(ydata_full <= peak*1) & (ydata_full >= peak * 0.1)]
-        xdata = xdata_full[(ydata_full <= peak*1) & (ydata_full >= peak * 0.1)]
+        peak_ix = ydata_full.idxmax()
+        peak = ydata_full.loc[peak_ix]
+        ydata = ydata_full.loc[peak_ix:]
+        index1 = ydata[ydata <= peak * 0.9].index[0]
+        index2 = ydata[ydata <= peak * 0.1].index[0]
+        ydata = ydata.loc[index1:index2]
+        xdata = xdata_full.loc[index1:index2]
+        guess = np.array([1, 1, 1, 1])
     elif pulse_amplitude < 0:
-        peak = ydata_full.min()
-        ydata = ydata_full[(ydata_full >= peak*1) & (ydata_full <= peak * 0.1)]
-        xdata = xdata_full[(ydata_full >= peak*1) & (ydata_full <= peak * 0.1)]
-
+        peak_ix = ydata_full.idxmax()
+        peak = ydata_full.loc[peak_ix]
+        ydata = ydata_full.loc[peak_ix:]
+        index1 = ydata[ydata >= peak * 0.9].index[0]
+        index2 = ydata[ydata >= peak * 0.1].index[0]
+        ydata = ydata.loc[index1:index2]
+        xdata = xdata_full.loc[index1:index2]
+        guess = np.array([1, 1, 1, 1])
     #shift time so first time point is time = 0
     x_zeroed = xdata - xdata.values[0]
 
     #function to define equation for exponential fit; doing bi-exponential fit
     def exp_decay(x, a, b, c, d):
         return a*np.exp(-b*x) + c*np.exp(-d*x)
-
-    #guesses for amplitudes and taus
-    guess = np.array([1e-12, 1e3, 1e-12, 1e3])
 
     #actual fit
     popt, pcov = curve_fit(exp_decay, x_zeroed, ydata, guess)
@@ -75,10 +80,10 @@ def calc_membrane_properties(df, baseline_start=0.5, baseline_end=0.8, pulse_sta
     x_full_zeroed = xdata_full - xdata_full.values[0]
 
     #generate y values from curve fit
-    y_curve = exp_decay(x_full_zeroed, *popt)
+    y_fit = exp_decay(x_full_zeroed, *popt)
 
     #take integral of curve to get q1
-    q1 = trapz(y_curve, x_full_zeroed)
+    q1 = trapz(y_fit, x_full_zeroed)
     #print("q1: %s" %q1)
 
     #q2 is correction for charge from i_baseline to i_ss
@@ -90,12 +95,17 @@ def calc_membrane_properties(df, baseline_start=0.5, baseline_end=0.8, pulse_sta
     #print("qt: %s" %qt)
 
     #resistance calculations
-    ra = (tau*pulse_amplitude)/qt
-    rt = (pulse_amplitude)/delta_i
+    ra = (tau * pulse_amplitude * 1e-3) / (qt * 1e-12)
+    rt = (pulse_amplitude * 1e-3) / (delta_i * 1e-12)
     rm = rt - ra
 
     #capacitance calculation
-    cm = (qt * rt) / (pulse_amplitude * rm)
+    cm = (qt * 1e-12 * rt) / (pulse_amplitude * 1e-3 * rm)
 
+    # convert resistance to MOhm, tau to ms, capacitance to pF
+    ra *= 1e-6
+    rm *= 1e-6
+    tau *= 1e3
+    cm *= 1e12
 
-    return ra*1e-6, rm*1e-6, cm*1e12, tau*1e3
+    return ra, rm, cm, tau
